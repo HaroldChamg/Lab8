@@ -185,3 +185,12 @@ ggplot(data=candy)+
 ```
 
 For this lab I tidied the data by getting rid of all the columns except for caramel, peanutyalmondy,and winpercent because that is all that I needed for my question. I filter out any candy that didn't have either peanuts or caramel because those candy bars don't matter for this comparison. I then united the caramel and peanutyalmondy columns so that I could plot which was more liked using a facet grid. I did this by coloring by the type, based off of what the true false statement was in the table.
+
+
+
+
+**Team Summary**
+Lucas completed the entire individual portion, as well as formatted the lab.
+Harold helped come up with team question, did his entire part, helped answer
+Max helped come up with team question, did his entire part, helped find the data set we used
+Jon answered most team questions, did his individual portion

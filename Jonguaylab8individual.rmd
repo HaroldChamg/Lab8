@@ -1,0 +1,54 @@
+```{r}
+library(tidyverse)
+library(fivethirtyeight)
+library(readr)
+library(data.table)
+data <- candy_rankings
+datamanipulated <- data %>%
+  gather('hard','bar','pluribus', key = 'shape', value = 'T or F')
+databar <- datamanipulated %>%
+  filter(shape == 'bar' & `T or F` == TRUE) %>%
+  select(10:12)
+datapluribus <- datamanipulated %>%
+  filter(shape == 'pluribus' & `T or F` == TRUE) %>%
+           select(10:12)
+datahard <- datamanipulated %>%
+  filter(shape == 'hard' & `T or F` == TRUE) %>%
+  select(10:12)
+
+
+ 
+
+
+ggplot(datahard) +
+  geom_boxplot(mapping = aes(x = shape, y = winpercent), color = 'darkblue') 
+
+ggplot(datapluribus) +
+  geom_boxplot(mapping = aes(x = shape, y = winpercent), colour = 'red') 
+
+ggplot(databar) +
+  geom_boxplot(mapping = aes(x = shape, y = winpercent), color = 'darkgreen')
+
+```
+
+
+
+
+What is the shape that wins the most for candy?
+
+I found the shape that wins the most was candy bars.  I attempted to merge the datasets together, but since there was an unequal number of each candy shape, it was impossible to tidy the data in a way I could plot all three box plots together on the same axis.
+
+###Team Portion
+The overall question we are answering comes from Willy Wonka, a domain expert running a candy company.  Willy asked us to answer what factors create the best candy?  This is an important question, because it will help positively influence the sales of his company, as well as the enjoyment of the people!
+
+The data we used can be be accessed from the fivethiryeight library in R.
+
+Codebook: This dataset is simple to understand, but here is a codebook anyways
+Competitorname- Brand of candy
+followed by 9 variables describing the contents, flavor, and shape of the candies
+Sugarpercent- percentile of sugar it falls under in datset
+winpercent- The overall win percentage, compared to 269,000 matchups
+Pricepercent- Unit price compared to other candies.
+
+We recommend to the domain expert that he make his candy bar shaped, with flavors of (insert what u found here), containing (insert other here)  Following this recommendation will lead to increased sales and customer appreciation. 
+

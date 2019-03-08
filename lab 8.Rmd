@@ -1,0 +1,63 @@
+```{r}
+library(tidyverse)
+install.packages("fivethirtyeight")
+library(fivethirtyeight)
+```
+
+```{r}
+candy<-candy_rankings
+```
+
+```{r}
+candy<-select(candy,chocolate,pricepercent)
+
+```
+
+```{r}
+candy<-mutate(candy,yesORno=ifelse(chocolate =="TRUE","1","0"))
+```
+
+```{r}
+YES<-filter(candy,yesORno== 1)%>%
+  
+``` 
+
+
+```{r}
+NO<-filter(candy,yesORno== 0)
+```
+```{r}
+
+```
+
+```{r}
+ggplot(data=candy)+
+  geom_point(mapping = aes(x= pricepercent, y= yesORno))+
+  geom_smooth(mapping = aes(x= pricepercent, y= yesORno))
+```
+
+```{r}
+mean(YES$pricepercent)
+```
+
+```{r}
+mean(NO$pricepercent)
+```
+
+import data into R: Did it
+
+tidy the data: Talked to prof Eric on Thursday, he said our data is clean so can skip this part.
+
+create and transform variables: I have created a new variable called "yesORno", this column shows whether the candy contains chocolate or not(1 is yes,0 is no)
+
+create plots of the variables and relationships between variables or create meaningful summaries of the data
+generate “findings”: So my research question is "Do candies contain chocolate have a higher price than those are not?" According to my analysis as well as my visualizations, I would conclude that chocolate does make the value of the candies higher. 
+
+
+write a few sentences in the team report detailing what you did, including which functions from the tidyverse you used.
+
+I first have installed the package from a repository called "fivethirtyeight", and foudn this candy dataset interesting, because I would like to know what increase the value of the candy. To be specific, I want to know the relationship between chocoltate and price; therefore, I used "select" to slect the columns that are helpful for my analysis. I then create a new column that makes TRUR FALSE to 1 and 0 to present if there is chocolate containe or not. I then, created two new datesets that are filtered by 1 and 0, and used mean to see if "Yes" have averaging a higher price than "NO". Last, I ultilized GEOM POINT and GEOM SMOOTH as my visualization to support my point.
+
+
+A section detailing which team members did what:
+What I have done: Individual stuff submitted on time, created repository, offered research question for the team, offered my reference if they ended up using my research question, figured out the instructions of lab assignment with Eric.

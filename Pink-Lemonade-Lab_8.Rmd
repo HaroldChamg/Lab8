@@ -1,0 +1,187 @@
+---
+title: "Pink Lemonade Lab 8"
+author: "Pink Lemonade-Lucas Brack, Jon Guay, Harold Chang, Max Ward"
+date: "March 8, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(fivethirtyeight)
+library(readr)
+library(data.table)
+
+```
+
+#Best Candy Type
+The overall question we are answering comes from Willy Wonka, a domain expert running a candy company.  Willy asked us to answer what factors create the best candy?  This is an important question, because it will help positively influence the sales of his company, as well as the enjoyment of the people!
+
+The data we used can be be accessed from the fivethiryeight library in R.
+
+Codebook: This dataset is simple to understand, but here is a codebook anyways
+
+Competitorname- Brand of candy
+
+followed by 9 variables describing the contents, flavor, and shape of the candies
+
+Sugarpercent- percentile of sugar it falls under in datset
+
+winpercent- The overall win percentage, compared to 269,000 matchups
+
+Pricepercent- Unit price compared to other candies.
+
+
+We recommend to the domain expert that he make his candy bar shaped, made of chocolate, containing peanuts or almonds, and having a higher than average price..  Following this recommendation will lead to increased sales and customer appreciation. 
+
+####Jon Guay
+###What is the shape that wins the most for candy?
+```{r}
+data <- candy_rankings
+
+datamanipulated <- data %>%
+
+  gather('hard','bar','pluribus', key = 'shape', value = 'T or F')
+
+databar <- datamanipulated %>%
+
+  filter(shape == 'bar' & `T or F` == TRUE) %>%
+
+  select(10:12)
+
+datapluribus <- datamanipulated %>%
+
+  filter(shape == 'pluribus' & `T or F` == TRUE) %>%
+
+           select(10:12)
+
+datahard <- datamanipulated %>%
+
+  filter(shape == 'hard' & `T or F` == TRUE) %>%
+
+  select(10:12)
+
+
+ggplot(datahard) +
+
+  geom_boxplot(mapping = aes(x = shape, y = winpercent), color = 'darkblue') 
+
+
+
+ggplot(datapluribus) +
+
+  geom_boxplot(mapping = aes(x = shape, y = winpercent), colour = 'red') 
+
+
+
+ggplot(databar) +
+
+  geom_boxplot(mapping = aes(x = shape, y = winpercent), color = 'darkgreen')
+
+
+
+```
+
+I found the shape that wins the most was candy bars.  I attempted to merge the datasets together, but since there was an unequal number of each candy shape, it was impossible to tidy the data in a way I could plot all three box plots together on the same axis.
+
+####Max Ward
+
+###Does the higher level of sugar percentiles line up with the higher win percents?
+
+```{r, results="hide"}
+candy <- candy_rankings
+candy
+
+```
+
+```{r}
+ggplot(data = candy, aes(x = winpercent, y = sugarpercent)) + 
+
+  geom_point(color='blue') +
+
+  geom_smooth(method = "lm", se = FALSE, color = 'red')
+
+```
+
+As we can see there is a slight correltion between the winpercent and sugarpercent. So we can say that the higher levels of sugar the more people will like it.  
+
+
+####Harold Chang
+```{r, results="hide"}
+candy<-candy_rankings
+```
+
+```{r, results="hide"}
+candy<-select(candy,chocolate,pricepercent)
+```
+
+```{r, results="hide"}
+candy<-mutate(candy,yesORno=ifelse(chocolate =="TRUE","1","0"))
+```
+
+```{r, results="hide"}
+YES<-filter(candy,yesORno== 1)
+YES
+
+NO<-filter(candy,yesORno== 0)
+NO
+
+``` 
+
+```{r}
+
+ggplot(data=candy)+
+
+  geom_point(mapping = aes(x= pricepercent, y= yesORno))+
+
+  geom_smooth(mapping = aes(x= pricepercent, y= yesORno))
+
+```
+
+```{r}
+
+mean(YES$pricepercent)
+
+mean(NO$pricepercent)
+
+```
+
+Create and transform variables: I have created a new variable called "yesORno", this column shows whether the candy contains chocolate or not(1 is yes,0 is no)
+
+create plots of the variables and relationships between variables or create meaningful summaries of the data
+
+generate ???findings???: So my research question is "Do candies contain chocolate have a higher price than those are not?" According to my analysis as well as my visualizations, I would conclude that chocolate does make the value of the candies higher. 
+
+write a few sentences in the team report detailing what you did, including which functions from the tidyverse you used.
+
+I first have installed the package from a repository called "fivethirtyeight", and foudn this candy dataset interesting, because I would like to know what increase the value of the candy. To be specific, I want to know the relationship between chocoltate and price; therefore, I used "select" to slect the columns that are helpful for my analysis. I then create a new column that makes TRUR FALSE to 1 and 0 to present if there is chocolate containe or not. I then, created two new datesets that are filtered by 1 and 0, and used mean to see if "Yes" have averaging a higher price than "NO". Last, I ultilized GEOM POINT and GEOM SMOOTH as my visualization to support my point.
+
+A section detailing which team members did what:
+
+What I have done: Individual stuff submitted on time, created repository, offered research question for the team, offered my reference if they ended up using my research question, figured out the instructions of lab assignment with Eric.
+
+####Lucas Brack
+
+###What is more liked, caramel or nuts?
+```{r,results="hide"}
+candy <- candy_rankings%>%
+  filter(caramel==TRUE | peanutyalmondy==TRUE)%>%
+  select(caramel,peanutyalmondy,winpercent)%>%
+  unite(type,caramel,peanutyalmondy)
+candy
+```
+
+```{r ,message = F, warning = F}
+
+ggplot(data=candy)+
+  geom_dotplot(mapping=aes(x=winpercent,fill=as.factor(type)))+
+  facet_grid(type~.)+
+  theme(
+  strip.background = element_blank(),
+  strip.text.y = element_blank()
+  )+
+  scale_fill_discrete(name="Ingredient",labels=c("Nuts","Caramel","Both"))+
+  labs(title="Nuts Have a Higher Rating Than Caramel", x="Win Percentage", y="")
+```
+
+For this lab I tidied the data by getting rid of all the columns except for caramel, peanutyalmondy,and winpercent because that is all that I needed for my question. I filter out any candy that didn't have either peanuts or caramel because those candy bars don't matter for this comparison. I then united the caramel and peanutyalmondy columns so that I could plot which was more liked using a facet grid. I did this by coloring by the type, based off of what the true false statement was in the table.

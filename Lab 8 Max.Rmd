@@ -1,0 +1,25 @@
+---
+title: "Lab 8 Max"
+author: "Max Ward"
+date: "3/6/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(fivethirtyeight)
+
+candy <- candy_rankings
+view(candy)
+```
+***Does the higher level of sugar percentiles line up with the higher win percents?
+```{r}
+ggplot(data = candy, aes(x = winpercent, y = sugarpercent)) + 
+  geom_point(color='blue') +
+  geom_smooth(method = "lm", se = FALSE, color = 'red')
+```
+***As we can see there is a slight correltion between the winpercent and sugarpercent. So we can say that the higher levels of sugar the more people will like it.  
+
+
